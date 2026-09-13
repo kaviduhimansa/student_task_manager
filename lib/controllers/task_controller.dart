@@ -1,22 +1,22 @@
-
 import '../models/task.dart';
+import '../repositories/task_repository.dart';
 
 class TaskController {
-  final List<Task> tasks = [];
+  final TaskRepository repository = TaskRepository();
 
-  // Add a new task
+  List<Task> get tasks {
+    return repository.getTasks();
+  }
+
   void addTask(Task task) {
-    tasks.add(task);
+    repository.addTask(task);
   }
 
-  // Delete a task
   void deleteTask(int index) {
-    tasks.removeAt(index);
+    repository.deleteTask(index);
   }
 
-  // Change task status
   void changeStatus(int index) {
-    tasks[index].completed = !tasks[index].completed;
+    repository.changeStatus(index);
   }
 }
-
