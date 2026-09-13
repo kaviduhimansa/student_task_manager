@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import '../models/task.dart';
 import '../controllers/task_controller.dart';
@@ -16,52 +15,117 @@ class AddTaskPage extends StatefulWidget {
 }
 
 class _AddTaskPageState extends State<AddTaskPage> {
-
-  TextEditingController taskNameController = TextEditingController();
+  final TextEditingController taskNameController =
+      TextEditingController();
 
   String category = 'Assignment';
   String priority = 'High';
+
+  final List<String> categories = [
+    'Assignment',
+    'Lecture',
+    'Research',
+    'Exam',
+    'Personal',
+  ];
+
+  final List<String> priorities = [
+    'High',
+    'Medium',
+    'Low',
+  ];
+
+  @override
+  void dispose() {
+    taskNameController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add Task'),
+        title: const Text(
+          'Add Task',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        centerTitle: true,
       ),
 
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
 
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+
           children: [
-
-            const Text('Task Name'),
-
-            TextField(
-              controller: taskNameController,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'Enter task name',
+            const Text(
+              'Create New Task',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
               ),
             ),
 
-            const SizedBox(height: 20),
+            const SizedBox(height: 8),
 
-            const Text('Category'),
+            const Text(
+              'Enter the details of your task below.',
+              style: TextStyle(
+                fontSize: 15,
+              ),
+            ),
 
-            DropdownButton<String>(
+            const SizedBox(height: 25),
+
+            const Text(
+              'Task Name',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+
+            const SizedBox(height: 8),
+
+            TextField(
+              controller: taskNameController,
+
+              decoration: InputDecoration(
+                hintText: 'Enter task name',
+                prefixIcon: const Icon(Icons.task_alt),
+
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 22),
+
+            const Text(
+              'Category',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+
+            const SizedBox(height: 8),
+
+            DropdownButtonFormField<String>(
               value: category,
-              isExpanded: true,
 
-              items: [
-                'Assignment',
-                'Lecture',
-                'Research',
-                'Exam',
-                'Personal',
-              ].map((value) {
-                return DropdownMenuItem(
+              decoration: InputDecoration(
+                prefixIcon: const Icon(Icons.category),
+
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+
+              items: categories.map((value) {
+                return DropdownMenuItem<String>(
                   value: value,
                   child: Text(value),
                 );
@@ -74,20 +138,31 @@ class _AddTaskPageState extends State<AddTaskPage> {
               },
             ),
 
-            const SizedBox(height: 20),
+            const SizedBox(height: 22),
 
-            const Text('Priority'),
+            const Text(
+              'Priority',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
 
-            DropdownButton<String>(
+            const SizedBox(height: 8),
+
+            DropdownButtonFormField<String>(
               value: priority,
-              isExpanded: true,
 
-              items: [
-                'High',
-                'Medium',
-                'Low',
-              ].map((value) {
-                return DropdownMenuItem(
+              decoration: InputDecoration(
+                prefixIcon: const Icon(Icons.flag),
+
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+
+              items: priorities.map((value) {
+                return DropdownMenuItem<String>(
                   value: value,
                   child: Text(value),
                 );
@@ -104,15 +179,16 @@ class _AddTaskPageState extends State<AddTaskPage> {
 
             SizedBox(
               width: double.infinity,
+              height: 52,
 
-              child: ElevatedButton(
+              child: ElevatedButton.icon(
                 onPressed: () {
-
                   if (taskNameController.text.trim().isEmpty) {
-
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
-                        content: Text('Please enter task name'),
+                        content: Text(
+                          'Please enter task name',
+                        ),
                       ),
                     );
 
@@ -120,7 +196,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                   }
 
                   Task task = Task(
-                    title: taskNameController.text,
+                    title: taskNameController.text.trim(),
                     category: category,
                     priority: priority,
                   );
@@ -130,7 +206,15 @@ class _AddTaskPageState extends State<AddTaskPage> {
                   Navigator.pop(context);
                 },
 
-                child: const Text('Add Task'),
+                icon: const Icon(Icons.add_task),
+
+                label: const Text(
+                  'Add Task',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
             ),
           ],
@@ -139,4 +223,3 @@ class _AddTaskPageState extends State<AddTaskPage> {
     );
   }
 }
-
